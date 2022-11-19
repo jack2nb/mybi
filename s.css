@@ -104,7 +104,8 @@
   .btns .btn-2::before{
     animation-delay: 0.22s;
   }
-  @keyframes shimmer {
+  /* 动画帧 */
+  @keyframes shimmer { 
     0%{
       background-position: -450px 0;
     }
