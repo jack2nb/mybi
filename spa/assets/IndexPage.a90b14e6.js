@@ -1,0 +1,1 @@
+import{Q as e}from"./QPage.e35c0d98.js";import{_ as a,G as t,I as o,J as r,K as s,M as n}from"./index.e47b13e1.js";import"./render.0a017f38.js";const c=t({name:"\u7D22\u5F15\u9875"});function p(f,_,d,i,x,m){return o(),r(e,{class:"flex flex-center"},{default:s(()=>[n(" indexpages ")]),_:1})}var g=a(c,[["render",p]]);export{g as default};
