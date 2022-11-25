@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/quasar@2.10.1/dist/quasar.prod.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div id="q-app">
+
+    {{count}}
+    <div v-text="dcount"></div>
+    <div class="q-ma-md">
+      <q-btn label="Notify" color="primary" @click="notify"></q-btn>
+    </div>
+  </div>
+
+  <!-- Add the following at the end of your body tag -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quasar@2.10.1/dist/quasar.umd.prod.js"></script>
+
+  <script>
+    const { defineComponent, createApp, ref, watch, computed } = Vue
+    const { useQuasar } = Quasar;
+    let count = ref(1);
+    watch(count, () => { console.log(1) });
+    
+
+    const app = createApp({
+      setup() {
+        let dcount = computed(()=>{return count.value*2});
+        const $q = useQuasar();
+        function notify() {
+          count.value++;
+          $q.notify('Running on Quasar v' + $q.version);
+        }
+
+        return { count, notify,dcount }
+      }
+    })
+
+    app.use(Quasar)
+    app.mount('#q-app')
+  </script>
+</body>
+
+</html>
