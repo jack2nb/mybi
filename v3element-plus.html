@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <!--加载 vue3 -->
+  <script src="https://unpkg.com/vue@3.2.33/dist/vue.global.js"></script>
+  <!--加载 element-plus -->
+  <script src="https://unpkg.com/element-plus@2.1.9/dist/index.full.js"></script>
+  <link href="https://unpkg.com/element-plus@2.1.9/dist/index.css" rel="stylesheet" />
+  <title>CDN加载Vue3 + ui演示</title>
+</head>
+
+<body>
+  <div id="app">
+
+    <el-button @click="count++">自增</el-button> <br>
+    {{ count }}
+  </div>
+  <script >
+    const { ref, createApp, onMounted } = Vue
+    const app = {
+      setup() {
+        const count = ref(0)
+        return {
+          count
+        }
+      }
+    }
+    // 生命周期钩子 ？？
+    onMounted(() => {
+      console.log(`加载完成 ${count.value}.`)
+    })
+    createApp(app)
+      .use(ElementPlus)
+      .mount('#app')
+  </script>
+</body>
+
+
+</html>

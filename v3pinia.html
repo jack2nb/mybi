@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!----https://www.cnblogs.com/jyk/p/16212215.html -->
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <!--加载 axios -->
+  <script src="https://unpkg.com/axios@0.26.1/dist/axios.min.js"></script>
+  <!--加载 vue3 -->
+  <script src="https://unpkg.com/vue@3.2.33/dist/vue.global.js"></script>
+  <!--加载 vue-router -->
+  <script src="https://unpkg.com/vue-router@4.0.14/dist/vue-router.global.js"></script>
+  <!--加载 pinia -->
+  <script src="https://unpkg.com/vue-demi@0.12.5/lib/index.iife.js"></script>
+  <script src="https://unpkg.com/pinia@2.0.13/dist/pinia.iife.js"></script>
+  
+  <script src="https://unpkg.com/pinia-persistedstate-plugin/dist/pinia-persistedstate-plugin.umd.js"></script>
+<!--加载 element-plus -->
+  <script src="https://unpkg.com/element-plus@2.1.9/dist/index.full.js"></script>
+  <link href="https://unpkg.com/element-plus@2.1.9/dist/index.css" rel="stylesheet" />
+  <title>CDN加载Vue3 + ui演示</title>
+
+  <title>CDN加载Vue3 + 项目</title>
+</head>
+
+<body>
+  <div id="app">
+
+    <el-button @click="count++">自增</el-button> <br>
+    <el-button @click="store.increment">自增下</el-button> <br>
+    <el-button @click="store.loadData">loadData</el-button> <br>
+    <el-button @click="store.loadData2">loadData2</el-button> <br>
+    
+    {{ count }}
+    <div>{{store}}</div>
+  </div>
+  <script>
+/**
+ * 测试 pinia 的状态  持久化
+ */
+
+ 
+    //const { createPersistedState }  =  pinia-persistedstate-plugin
+  //pinia-plugin-persistedstate
+    const testPromie = () => {
+      return new Promise((fun) => {
+        setTimeout(() => {
+          fun(100)
+        }, 500)
+      })
+    }
+
+    const useStore = Pinia.defineStore('counter', {
+      state: () => {
+        return { count: 0, name: '我的Pinia' }
+      },
+      // 也可以这样定义状态
+      // state: () => ({ count: 0 })
+      actions: {
+        increment() {
+          this.count++
+        },
+        async loadData(val, state) {
+          const foo = await testPromie()
+          this.count += foo
+          this.name = 'async 赋值 ' + new Date().valueOf()
+        },
+        loadData2(val, state) {
+          testPromie().then((val) => {
+            this.count += val
+            this.name = '异步赋值 ' + new Date().valueOf()
+          })
+        }
+      }
+    })
+
+  </script>
+ 
+  <script>
+    const { ref, createApp, onMounted } = Vue
+
+    const app = {
+      setup() {
+        const count = ref(0)
+        const store = useStore()
+        return {
+          count,store
+        }
+      }
+    }
+   
+    const pinia = Pinia.createPinia()
+    //pinia.use(piniaPluginPersist)
+    //createApp(App).use(router).use(store).mount('#app')
+    createApp(app)
+      .use(ElementPlus)
+      .use(pinia)
+      //.use(router)
+      .mount('#app')
+  </script>
+</body>
+
+
+</html>
