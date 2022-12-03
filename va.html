@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/quasar@2.10.1/dist/quasar.prod.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div id="app">
+
+        <button @click="ck">变</button>
+        {{name}}
+        {{data}}
+      
+      </div>
+
+    <!-- Add the following at the end of your body tag -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.0/axios.min.js"></script>
+
+    <script>
+        const { defineComponent, createApp, ref, watch, computed } = Vue;
+//载入数据
+let url = "";
+url = "https://cdn.jsdelivr.net/gh/jack2nb/studcpp@main/searchindex.json";
+//url = "https://randomuser.me/api/?results=5";
+let ck = function () {
+  //function 有区别
+  console.log(this.name, "改变this");
+  this.name = "91";
+  console.log(this.name, "改变this");
+};
+//-----------
+
+let ao = {
+  data: function () {
+    return { data: [], name: "123" };
+  },
+  methods: {
+    ck: ck
+  },
+  mounted: function () {
+    axios
+      .get(url)
+      .then((res) => {
+        console.log(res.data.doc_urls);
+        this.data = res.data.doc_urls;
+        //console.log("this==", this);
+        this.name = "345111";
+      })
+      .catch((err) => {
+        console.log(err.message, err.response.status);
+      });
+  }
+};
+Vue.createApp(ao).mount("#app");
+
+    </script>
+</body>
+
+</html>
