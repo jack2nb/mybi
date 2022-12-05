@@ -1,44 +1,97 @@
 <!DOCTYPE html>
+<!--
+
+   umd方式
+
+  https://adwinyang.github.io/quasar-doc-zh-cn/ 
+  bootstrap-icons
+  https://cdn.jsdelivr.net/npm/bootstrap-icons@latest/
+-->
 <html>
 
 <head>
   <link href="https://cdn.jsdelivr.net/npm/quasar@2.10.1/dist/quasar.prod.css" rel="stylesheet" type="text/css">
+
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/@quasar/extras/material-icons/material-icons.css">
 </head>
 
 <body>
   <div id="q-app">
-
-    {{count}}
-    <div v-text="dcount"></div>
-    <div class="q-ma-md">
-      <q-btn label="Notify" color="primary" @click="notify"></q-btn>
+    <div class="q-pa-md q-gutter-md">
+      <q-btn round icon="notifications">
+        <q-badge floating color="red" rounded />
+      </q-btn>
+      <q-badge color="blue" rounded class="q-mr-sm" />Status
     </div>
+
+    <!------------->
+    {{count}}
+    <div v-text="dcount"> </div>
+    <div class="q-ma-md">
+      <q-btn label="消息" color="primary" @click="notify"></q-btn>
+      <q-btn label="切换主题" color="secondary" @click="$q.dark.toggle()"></q-btn>
+    </div>
+
+    <div class="   bg-deep-purple-2   row   justify-evenly   
+       " style="border:1px solid #000 ;  max-width: 50vw;">
+      <div slot="footer" class="shadow-2 bg-cyan-2">First column</div>
+      <div class="shadow-2 text-pink-8 bg-blue-grey-2">Second column</div>
+      <div class="  shadow-2 bg-yellow-2">Third column</div>
+    </div>
+    <!------->
+    <q-date v-model="onedate"></q-date>
   </div>
+
+
 
   <!-- Add the following at the end of your body tag -->
   <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-i18n@9.2.2/dist/vue-i18n.global.prod.js"></script>
+
+
   <script src="https://cdn.jsdelivr.net/npm/quasar@2.10.1/dist/quasar.umd.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quasar@2.10.1/dist/icon-set/fontawesome-v6.umd.prod.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/quasar@2.10.1/dist/lang/zh-CN.umd.prod.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/quasar@2.10.1/dist/icon-set/material-icons.umd.prod.js"></script>
+
 
   <script>
     const { defineComponent, createApp, ref, watch, computed } = Vue
     const { useQuasar } = Quasar;
+    const { createI18n } = VueI18n;
+    const i18n = createI18n({
+      locale: 'zh-CN',
+    })
     let count = ref(1);
     watch(count, () => { console.log(1) });
-    
+    let dcount = computed(() => { return count.value * 2 });
 
-    const app = createApp({
+    let appdat = {
       setup() {
-        let dcount = computed(()=>{return count.value*2});
+        //语言
+        Quasar.lang.set(Quasar.lang.zhCN)
+        let onedate = ref('2019/02/01');
+
         const $q = useQuasar();
+        //--
+        //$q.iconSet.set(bootstrap-icons);//图标
+        Quasar.iconSet.set(Quasar.iconSet.fontawesomeV6);
+        console.log($q.lang.getLocale());
+        $q.lang.set('zh-CN');
         function notify() {
           count.value++;
           $q.notify('Running on Quasar v' + $q.version);
         }
 
-        return { count, notify,dcount }
+        return { count, notify, dcount, $q, onedate }
       }
-    })
+    }
 
+
+    const app = createApp(appdat)
     app.use(Quasar)
     app.mount('#q-app')
   </script>
